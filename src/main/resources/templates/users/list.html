@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="layout/base :: layout(~{::content})">
+  <div th:fragment="content">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Usuarios</h2>
+        <a class="btn btn-primary" href="/api/users/users/new">Nuevo usuario</a>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="u : ${users}">
+            <td th:text="${u.idUser}"></td>
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.role}"></td>
+            <td>
+              <span th:text="${u.enabled} ? 'Activo' : 'Inactivo'" class="muted"></span>
+            </td>
+            <td>
+              <div class="actions">
+                <a class="btn btn-secondary" th:href="@{'/api/users/users/edit/' + ${u.idUser}}">Editar</a>
+                <button class="btn btn-danger" th:if="${u.enabled}" th:attr="data-id=${u.idUser}" onclick="disableUser(this)">Deshabilitar</button>
+                <button class="btn btn-primary" th:if="${!u.enabled}" th:attr="data-id=${u.idUser}" onclick="enableUser(this)">Habilitar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  async function disableUser(btn){
+    const id = btn.getAttribute('data-id');
+    const res = await fetch(`/api/users/${id}/disable`, { method: 'PUT' });
+    if(res.ok) location.reload();
+  }
+  async function enableUser(btn){
+    const id = btn.getAttribute('data-id');
+    const res = await fetch(`/api/users/${id}/enable`, { method: 'PUT' });
+    if(res.ok) location.reload();
+  }
+</script>
+</body>
+</html>
+

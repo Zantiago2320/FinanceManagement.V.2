@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <div th:fragment="userForm(actionUrl, method, submitText)">
+    <form onsubmit="return submitUserForm(event)" class="card">
+      <input type="hidden" id="idUser" th:value="${user.idUser}" />
+      <div class="row">
+        <div style="flex:1;min-width:240px">
+          <label>Nombre</label>
+          <input id="name" name="name" type="text" th:value="${user.name}" required />
+        </div>
+        <div style="flex:1;min-width:240px">
+          <label>Email</label>
+          <input id="email" name="email" type="email" th:value="${user.email}" required />
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div style="flex:1;min-width:240px">
+          <label>Contraseña <span class="muted" th:text="${user.idUser} != null ? '(dejar en blanco para no cambiar)': ''"></span></label>
+          <input id="password" name="password" type="password" placeholder="••••••••" />
+        </div>
+        <div style="flex:1;min-width:240px">
+          <label>Rol</label>
+          <select id="role" name="role">
+            <option value="USER" th:selected="${user.role}=='USER'">USER</option>
+            <option value="ADMIN" th:selected="${user.role}=='ADMIN'">ADMIN</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px;align-items:center">
+        <label style="display:flex;gap:8px;align-items:center">
+          <input id="enabled" name="enabled" type="checkbox" th:checked="${user.enabled} == null ? true : ${user.enabled}" />
+          <span>Activo</span>
+        </label>
+      </div>
+      <div class="actions" style="margin-top:16px">
+        <button class="btn btn-primary" type="submit" th:text="${submitText} ?: 'Guardar'"></button>
+        <a class="btn btn-secondary" href="/api/users/users/list">Volver</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    async function submitUserForm(e){
+      e.preventDefault();
+      const id = document.getElementById('idUser')?.value;
+      const payload = {
+        idUser: id ? Number(id) : null,
+        name: document.getElementById('name').value?.trim(),
+        email: document.getElementById('email').value?.trim(),
+        password: document.getElementById('password').value || null,
+        role: document.getElementById('role').value,
+        enabled: document.getElementById('enabled').checked
+      };
+      const creating = !id;
+      const url = creating ? '/api/users/create' : `/api/users/update/${id}`;
+      const method = creating ? 'POST' : 'PUT';
+      const res = await fetch(url, { method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      if(res.ok){
+        window.location.href = '/api/users/users/list';
+      }else{
+        alert('Error al guardar el usuario');
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>
+

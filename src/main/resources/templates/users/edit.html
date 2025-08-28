@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="layout/base :: layout(~{::content})">
+  <div th:fragment="content">
+    <div class="card">
+      <h2 style="margin:0">Editar usuario</h2>
+      <p class="muted">Actualiza los datos y guarda.</p>
+    </div>
+    <div th:replace="users/form :: userForm('/api/users/update/' + ${user.idUser},'PUT','Actualizar')"></div>
+  </div>
+</div>
+</body>
+</html>
+

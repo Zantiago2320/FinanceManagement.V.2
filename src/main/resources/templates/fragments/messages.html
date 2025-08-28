@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <div th:fragment="flash(message, type)">
+    <div th:if="${message}" th:class="${'card ' + (type ?: '')}">
+      <span th:text="${message}"></span>
+    </div>
+  </div>
+</body>
+</html>
+
