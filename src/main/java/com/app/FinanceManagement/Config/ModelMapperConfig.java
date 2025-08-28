@@ -1,7 +1,7 @@
 package com.app.FinanceManagement.Config;
 
-import com.app.financeManagement.DTO.TransactionDTO;
-import com.app.financeManagement.Entity.Transaction;
+import com.app.FinanceManagement.DTO.TransactionDTO;
+import com.app.FinanceManagement.Entity.Transaction;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import org.springframework.context.annotation.Bean;

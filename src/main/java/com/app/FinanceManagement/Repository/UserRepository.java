@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByEnabledTrue();
 
-    Optional<User> findByIdAndEnabledTrue(Long id);
+    Optional<User> findByIdUserAndEnabledTrue(Long idUser);
 }

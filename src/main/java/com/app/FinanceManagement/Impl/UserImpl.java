@@ -40,7 +40,7 @@ public class UserImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long userId) {
-        User user = userRepository.findByIdAndEnabledTrue(userId)
+        User user = userRepository.findByIdUserAndEnabledTrue(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         return modelMapper.map(user, UserDTO.class);
     }
